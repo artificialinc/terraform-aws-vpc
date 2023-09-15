@@ -1059,7 +1059,7 @@ resource "aws_nat_gateway" "this" {
   count = local.create_vpc && var.enable_nat_gateway ? local.nat_gateway_count : 0
 
   allocation_id = element(
-    local.nat_gateway_ips,
+    var.reuse_nat_ips ? var.external_nat_ip_ids : aws_eip.nat.*.id,
     var.single_nat_gateway ? 0 : count.index,
   )
   subnet_id = element(
